@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Site Toolkit | Free construction calculators for bricks, concrete, EMI and units</title>
+<meta name="description" content="Free online calculators for builders and civil engineers: bricks, cement, sand, aggregate and steel for walls, slabs, columns, beams, footings and stairs; loan EMI; unit converter; site inspection checklist.">
+<link rel="canonical" href="https://sitetoolkit.github.io/">
+<meta name="author" content="Ugyen Gayleg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Site Toolkit: free construction calculators">
+<meta property="og:description" content="Estimate bricks, cement, sand, aggregate and steel; calculate loan EMI; convert units; run a site inspection checklist.">
+<meta property="og:url" content="https://sitetoolkit.github.io/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: professional, calm, confident; a working tool for builders
+   IDEA: a contractor's site board - a crane over a rising brick building, tools pinned below
+   PICTURE: hero illustration of a tower crane lifting a load over a half-built frame
+   COLOUR and TYPE: fired-brick red, concrete white, safety-yellow accent; Archivo wide for titles
+   LAYOUT: brick hero with picture, tool cards overlapping its edge, one large tool panel */
+:root{color-scheme:light dark;
+ --bg:light-dark(#f3f0ed,#121010);--card:light-dark(#ffffff,#1e1917);--ink:light-dark(#1d1815,#f2ebe5);
+ --mute:light-dark(#6a5f58,#ada199);--line:light-dark(#e4ddd7,#352c28);
+ --brick:#9e3b26;--brick-2:#7f2c1b;--brick-soft:light-dark(#f6e6e1,#2f201b);--hi:#f2c200;--hi-ink:#1d1815;
+ --shadow:0 1px 2px rgba(40,20,10,.06),0 12px 32px -12px rgba(40,20,10,.22)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Archivo,system-ui,sans-serif;overflow-x:clip}
+.wrap{max-width:1180px;margin:0 auto;padding:0 max(4vw,16px)}
+/* hero */
+.hero{background:linear-gradient(160deg,var(--brick) 0%,var(--brick-2) 100%);color:#fff;padding:22px 0 96px;position:relative;overflow:hidden}
+.top{display:flex;align-items:center;gap:10px;font-weight:700;font-stretch:112%;letter-spacing:.01em}
+.top svg{flex:none}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:24px;align-items:center;margin-top:28px}
+h1{font-size:clamp(36px,5.4vw,56px);line-height:1.04;margin:0 0 14px;font-stretch:120%;font-weight:800;text-wrap:balance}
+.hero p{margin:0;max-width:46ch;font-size:17px;color:rgba(255,255,255,.9)}
+.author{display:inline-flex;align-items:center;gap:12px;margin-top:22px;padding:8px 18px 8px 8px;border-radius:999px;background:rgba(255,255,255,.12);font-size:15px;line-height:1.3}
+.author small{display:block;font-size:13px;color:rgba(255,255,255,.85)}
+.author i{display:grid;place-items:center;flex:none;width:38px;height:38px;border-radius:50%;background:var(--hi);color:var(--hi-ink);font-style:normal;font-weight:800;font-size:13px}
+.hero .art{width:100%;height:auto;max-height:340px}
+.load{transform-origin:300px 52px;animation:sway 5s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-1.6deg)}50%{transform:rotate(1.6deg)}}
+@media(prefers-reduced-motion:reduce){.load{animation:none}}
+@media(max-width:720px){.hero-grid{grid-template-columns:minmax(0,1fr)}.hero .art{max-height:220px}.hero{padding-bottom:84px}}
+/* tool cards */
+.tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:-64px;position:relative}
+@media(max-width:860px){.tools{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tool{display:flex;gap:12px;align-items:flex-start;padding:16px;border-radius:14px;background:var(--card);color:var(--ink);text-decoration:none;box-shadow:var(--shadow);border:2px solid transparent;min-height:44px;transition:transform .15s,border-color .15s}
+.tool:hover{transform:translateY(-2px)}
+.tool[aria-current=page]{border-color:var(--brick)}
+.tool .ic{flex:none;display:grid;place-items:center;width:42px;height:42px;border-radius:10px;background:var(--brick-soft);color:var(--brick)}
+.tool[aria-current=page] .ic{background:var(--brick);color:#fff}
+.tool b{display:block;font-size:16px;line-height:1.25}
+.tool span{display:block;font-size:13px;color:var(--mute);line-height:1.35;margin-top:2px}
+@media(max-width:520px){.tool span{display:none}.tool{align-items:center;padding:12px}}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
+/* panel */
+main{padding:28px 0 56px}
+[hidden]{display:none!important}
+.panel{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:clamp(20px,3.4vw,40px)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3.4vw,44px);align-items:start}
+@media(max-width:760px){.grid{grid-template-columns:minmax(0,1fr)}}
+h2{font-size:clamp(24px,3vw,30px);line-height:1.15;margin:0 0 6px;font-stretch:110%}
+.lead{color:var(--mute);margin:0 0 22px}
+.seg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px;padding:5px;background:var(--bg);border-radius:12px}
+.seg button{flex:1 1 auto;border:0;background:transparent}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+button{font:inherit;font-weight:600;min-height:44px;padding:8px 16px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+button.primary{background:var(--brick);color:#fff;border-color:var(--brick)}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.fields .full{grid-column:1/-1}
+@media(max-width:520px){.fields{grid-template-columns:minmax(0,1fr)}}
+label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+input,select{font:inherit;font-size:16px;width:100%;min-height:46px;padding:9px 12px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+input:focus,select:focus{border-color:var(--brick)}
+.result{background:var(--bg);border-radius:14px;padding:clamp(18px,3vw,28px);position:relative;overflow:hidden}
+.result::before{content:"";position:absolute;inset:0 0 auto;height:6px;background:repeating-linear-gradient(90deg,var(--brick) 0 22px,var(--brick-2) 22px 24px)}
+.biglabel{font-weight:600;margin:6px 0 8px;color:var(--mute)}
+.big{font-size:clamp(34px,5.6vw,56px);line-height:1.05;font-weight:800;font-stretch:112%;font-variant-numeric:tabular-nums}
+.big .n{white-space:nowrap}
+.big small{display:inline-block;font-size:18px;font-weight:600;color:var(--mute);margin-left:8px;font-stretch:100%}
+.rows{list-style:none;padding:0;margin:22px 0 0}
+.rows li{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+.rows span:first-child{flex:none}
+.rows b{font-variant-numeric:tabular-nums;text-align:right;overflow-wrap:anywhere}
+.rows .sub{display:inline-block;max-width:100%;color:var(--mute);font-weight:500}
+.big.wrap .n{white-space:normal;overflow-wrap:anywhere}
+.note{font-size:14px;color:var(--mute);margin:18px 0 0}
+.bar{display:flex;height:16px;border-radius:8px;overflow:hidden;margin:20px 0 8px;background:var(--line)}
+.bar span{display:block;transition:width .3s}.bar .p{background:var(--brick)}.bar .i{background:var(--hi)}
+.key{display:flex;flex-wrap:wrap;gap:16px;font-size:14px;color:var(--mute)}
+.key i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;margin-top:8px;font-size:15px}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-size:13px;color:var(--mute);font-weight:600}
+.scroll{overflow-x:auto}
+details{margin-top:18px}summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
+.group h3{font-size:15px;margin:22px 0 4px;color:var(--brick)}
+.item{display:flex;align-items:center;gap:12px;padding:4px 0;border-bottom:1px solid var(--line)}
+.item input{width:22px;height:22px;min-height:0;flex:none;accent-color:var(--brick)}
+.item label{flex:1;font-weight:400;font-size:16px;margin:0;padding:8px 0;cursor:pointer}
+.item.done label{color:var(--mute);text-decoration:line-through}
+.item button{min-height:36px;padding:2px 10px;font-size:14px}
+.addrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,9em) auto;gap:8px;margin-top:16px}
+@media(max-width:520px){.addrow{grid-template-columns:minmax(0,1fr)}}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.meter{height:12px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:16px}
+.meter span{display:block;height:100%;background:var(--brick);transition:width .3s}
+@media(prefers-reduced-motion:reduce){.meter span,.bar span,.tool{transition:none}}
+.guides{padding:8px 0 56px}
+.guides>.wrap>h2{margin:0 0 6px}
+.gcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:22px}
+@media(max-width:760px){.gcards{grid-template-columns:minmax(0,1fr)}}
+.guide{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:clamp(18px,3vw,28px)}
+.guide h3{font-size:20px;line-height:1.25;margin:0 0 8px;font-stretch:108%}
+.guide p{margin:0 0 12px}
+.guide ol{margin:0 0 14px;padding-left:1.3em}.guide li{margin:6px 0}
+.ex{background:var(--bg);border-radius:10px;padding:14px 16px;margin:0 0 14px;font-variant-numeric:tabular-nums}
+.ex b{display:block;margin-bottom:4px}
+.guide table{font-size:14px}.guide td,.guide th{white-space:normal}
+.go{display:inline-flex;align-items:center;min-height:44px;color:var(--brick);font-weight:700;text-decoration:none}
+.go:hover{text-decoration:underline}
+footer{border-top:1px solid var(--line);padding:24px 0 36px;color:var(--mute);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px}
+footer b{color:var(--ink)}
+</style>
+</head>
+<body>
+<header class="hero">
+ <div class="wrap">
+  <div class="top">
+   <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect x="2" y="17" width="12" height="9" rx="1.5" fill="#fff"/><rect x="16" y="17" width="12" height="9" rx="1.5" fill="#fff" opacity=".7"/><rect x="9" y="6" width="12" height="9" rx="1.5" fill="#f2c200"/></svg>
+   Site Toolkit
+  </div>
+  <div class="hero-grid">
+   <div>
+    <h1>Everyday calculators for building work</h1>
+    <p>Estimate materials, plan loan payments, convert units and run a site inspection, all in one place and free to use.</p>
+    <div class="author"><i aria-hidden="true">UG</i><span>Author: <b>Ugyen Gayleg</b><small>VBPL (Civil Engineer)</small></span></div>
+   </div>
+   <svg class="art" viewBox="0 0 520 340" role="img" aria-label="A tower crane lifting steel over a brick building under construction">
+    <defs>
+     <pattern id="bk" width="24" height="14" patternUnits="userSpaceOnUse"><rect width="24" height="14" fill="#cf6a4f"/><path d="M0 .5H24M0 7.5H24M.5 0V7M12.5 7V14" stroke="#6e2516" stroke-width="1.2"/></pattern>
+     <linearGradient id="cc" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f4eee9"/><stop offset="1" stop-color="#d9cfc7"/></linearGradient>
+    </defs>
+    <circle cx="440" cy="70" r="40" fill="#fff" opacity=".1"/>
+    <circle cx="440" cy="70" r="24" fill="#fff" opacity=".12"/>
+    <rect x="0" y="300" width="520" height="40" fill="#000" opacity=".16"/>
+    <g opacity=".45" stroke="#fff" stroke-width="2"><path d="M206 300V140M220 300V140M200 260H226M200 220H226M200 180H226M200 144H226"/></g>
+    <rect x="238" y="240" width="112" height="60" fill="url(#bk)"/>
+    <rect x="358" y="240" width="104" height="60" fill="url(#bk)"/>
+    <rect x="238" y="200" width="112" height="40" fill="url(#bk)"/>
+    <rect x="358" y="214" width="104" height="26" fill="url(#bk)"/>
+    <g fill="url(#cc)"><rect x="230" y="116" width="9" height="184"/><rect x="349" y="116" width="9" height="184"/><rect x="461" y="116" width="9" height="184"/>
+     <rect x="224" y="232" width="252" height="9"/><rect x="224" y="172" width="252" height="9"/><rect x="224" y="112" width="252" height="9"/></g>
+    <rect x="224" y="121" width="252" height="3" fill="#000" opacity=".15"/><rect x="224" y="181" width="252" height="3" fill="#000" opacity=".15"/><rect x="224" y="241" width="252" height="3" fill="#000" opacity=".15"/>
+    <g stroke="#fff" stroke-width="2.6" fill="none" stroke-linejoin="round">
+     <path d="M102 300V52M118 300V52"/>
+     <path d="M102 300L118 280L102 260L118 240L102 220L118 200L102 180L118 160L102 140L118 120L102 100L118 80L102 60"/>
+     <path d="M54 40H430M54 52H430"/>
+     <path d="M130 52L142 40L154 52L166 40L178 52L190 40L202 52L214 40L226 52L238 40L250 52L262 40L274 52L286 40L298 52L310 40L322 52L334 40L346 52L358 40L370 52L382 40L394 52L406 40L418 52L430 40"/>
+     <path d="M110 40V14M110 14L430 40M110 14L60 40"/>
+    </g>
+    <rect x="96" y="40" width="28" height="22" rx="3" fill="#f2c200"/>
+    <rect x="60" y="52" width="30" height="20" rx="2" fill="#4a1a10"/>
+    <rect x="292" y="50" width="16" height="8" rx="2" fill="#fff"/>
+    <g class="load">
+     <path d="M300 58V150" stroke="#fff" stroke-width="2"/>
+     <path d="M300 150L268 166M300 150L332 166" stroke="#fff" stroke-width="1.6"/>
+     <rect x="262" y="166" width="76" height="16" rx="3" fill="#f2c200"/>
+     <path d="M266 171H334M266 177H334" stroke="#8a6d00" stroke-width="1.4"/>
+    </g>
+    <path d="M0 300H520" stroke="#fff" stroke-width="2" opacity=".5"/>
+   </svg>
+  </div>
+ </div>
+</header>
+
+<div class="wrap">
+ <nav class="tools" aria-label="Tools">
+  <a class="tool" href="#materials"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="13" width="9" height="7" rx="1"/><rect x="13" y="13" width="9" height="7" rx="1"/><rect x="7.5" y="4" width="9" height="7" rx="1"/></svg></span><div><b>Materials</b><span>Bricks, cement, sand, aggregate, steel</span></div></a>
+  <a class="tool" href="#emi"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 15.5l7-7"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/></svg></span><div><b>Loan / EMI</b><span>Monthly payment and interest</span></div></a>
+  <a class="tool" href="#convert"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 8h15l-4-4M20 16H5l4 4"/></svg></span><div><b>Unit converter</b><span>Length, area, weight and more</span></div></a>
+  <a class="tool" href="#checklist"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.5h6V4M8.5 12.5l2.5 2.5 4.5-5"/></svg></span><div><b>Site checklist</b><span>Inspection you can tick off</span></div></a>
+ </nav>
+</div>
+
+<main><div class="wrap">
+
+<section class="pane panel" id="p-materials">
+ <div class="grid">
+  <div>
+   <h2>Material quantity calculator</h2>
+   <p class="lead">Enter the size of the work to estimate what to order.</p>
+   <div class="fields" style="margin-bottom:16px"><div class="full"><label for="mU">Measure in</label><select id="mU"><option value="ft">Feet and inches (ft, in, sq ft)</option><option value="m">Metres and millimetres (m, mm, m²)</option></select></div></div>
+   <div class="seg" role="group" aria-label="Type of work">
+    <button type="button" data-kind="brick">Brick wall</button><button type="button" data-kind="plaster">Plaster</button><button type="button" data-kind="slab">Slab</button><button type="button" data-kind="column">Column</button><button type="button" data-kind="beam">Beam</button><button type="button" data-kind="footing">Footing</button><button type="button" data-kind="stair">Staircase</button>
+   </div>
+   <div class="fields" data-for="brick">
+    <div><label for="bL">Wall length (<span data-u="len">ft</span>)</label><input id="bL" type="number" inputmode="decimal" min="0" value="20"></div>
+    <div><label for="bH">Wall height (<span data-u="len">ft</span>)</label><input id="bH" type="number" inputmode="decimal" min="0" value="10"></div>
+    <div><label for="bT">Wall thickness</label><select id="bT"><option value="0.1">100 mm / 4 in (half brick)</option><option value="0.2" selected>200 mm / 8 in (one brick)</option><option value="0.3">300 mm / 12 in (one and a half brick)</option><option value="0.4">400 mm / 16 in (two brick)</option><option value="0.5">500 mm / 20 in (two and a half brick)</option><option value="custom">Custom thickness</option></select></div>
+    <div id="bTcWrap" hidden><label for="bTc">Custom thickness (<span data-u="thk">inch</span>)</label><input id="bTc" type="number" inputmode="decimal" min="0" value="9"></div>
+    <div><label for="bMix">Mortar mix (cement : sand)</label><select id="bMix"><option value="4">1 : 4</option><option value="5">1 : 5</option><option value="6" selected>1 : 6</option></select></div>
+    <div class="full"><label for="bW">Wastage (%)</label><input id="bW" type="number" inputmode="decimal" min="0" value="5"></div>
+   </div>
+   <div id="cGroups"></div>
+   <div class="fields" data-for="cshared" style="margin-top:16px">
+    <div class="full"><label for="cMix">Concrete grade (Cement : Sand : Aggregate)</label><select id="cMix"><option value="1,4,8">M7.5 (1 : 4 : 8), lean / plain concrete</option><option value="1,3,6">M10 (1 : 3 : 6)</option><option value="1,2,4">M15 (1 : 2 : 4)</option><option value="1,1.5,3" selected>M20 (1 : 1.5 : 3)</option><option value="1,1,2">M25 (1 : 1 : 2)</option></select></div>
+    <div class="full"><label for="cW">Wastage (%)</label><input id="cW" type="number" inputmode="decimal" min="0" value="5"></div>
+   </div>
+   <div class="fields" data-for="plaster">
+    <div class="full"><label for="pA">Plaster area (<span data-u="area">sq ft</span>)</label><input id="pA" type="number" inputmode="decimal" min="0" value="400"></div>
+    <div><label for="pT">Thickness</label><select id="pT"><option value="12" selected>12 mm (½ inch), inside</option><option value="20">20 mm (¾ inch), outside</option></select></div>
+    <div><label for="pMix">Mix (cement : sand)</label><select id="pMix"><option value="4" selected>1 : 4</option><option value="6">1 : 6</option></select></div>
+    <div class="full"><label for="pW">Wastage (%)</label><input id="pW" type="number" inputmode="decimal" min="0" value="5"></div>
+   </div>
+  </div>
+  <div class="result" aria-live="polite">
+   <p class="biglabel" id="mBigLabel"></p>
+   <div class="big" id="mBig"></div>
+   <ul class="rows" id="mRows"></ul>
+   <p class="note">Assumes standard bricks: actual size 190 × 90 × 90 mm, nominal size 200 × 100 × 100 mm with a 10 mm mortar joint (500 bricks per m³ of wall). Also 50 kg cement bags and usual dry-volume factors (1.33 for mortar, 1.54 for concrete). Concrete grades use nominal mix ratios; M25 and above are normally designed mixes, so confirm with your structural engineer. The staircase covers one flight (waist slab and steps); add landings as a slab. Steel is a rule-of-thumb % of concrete volume; always follow your structural drawings.</p>
+  </div>
+ </div>
+</section>
+
+<section class="pane panel" id="p-emi">
+ <div class="grid">
+  <div>
+   <h2>Loan / EMI calculator</h2>
+   <p class="lead">See your monthly payment and how much of it goes to interest.</p>
+   <div class="fields">
+    <div class="full"><label for="eC">Currency</label><select id="eC"></select></div>
+    <div class="full"><label for="eP" id="ePL">Loan amount</label><input id="eP" type="number" inputmode="decimal" min="0" value="2500000"></div>
+    <div><label for="eR">Interest rate (% per year)</label><input id="eR" type="number" inputmode="decimal" min="0" step="0.1" value="10"></div>
+    <div><label for="eY">Term (years)</label><input id="eY" type="number" inputmode="numeric" min="1" max="40" value="15"></div>
+   </div>
+  </div>
+  <div class="result" aria-live="polite">
+   <p class="biglabel">Monthly payment (EMI)</p>
+   <div class="big" id="eBig"></div>
+   <div class="bar"><span class="p" id="eBarP"></span><span class="i" id="eBarI"></span></div>
+   <div class="key"><span><i style="background:var(--brick)"></i>Loan amount</span><span><i style="background:var(--hi)"></i>Interest</span></div>
+   <ul class="rows" id="eRows"></ul>
+   <details><summary>Year-by-year breakdown</summary><div class="scroll"><table id="eTable"></table></div></details>
+  </div>
+ </div>
+</section>
+
+<section class="pane panel" id="p-convert">
+ <div class="grid">
+  <div>
+   <h2>Unit converter</h2>
+   <p class="lead">Convert between metric and imperial units used on site.</p>
+   <div class="seg" role="group" aria-label="Kind of unit" id="uCats"></div>
+   <div class="fields">
+    <div class="full"><label for="uV">Value</label><input id="uV" type="number" inputmode="decimal" value="100"></div>
+    <div><label for="uF">From</label><select id="uF"></select></div>
+    <div><label for="uT">To</label><select id="uT"></select></div>
+   </div>
+   <div class="actions"><button type="button" id="uSwap">⇄ Swap units</button></div>
+  </div>
+  <div class="result" aria-live="polite">
+   <p class="biglabel" id="uBigLabel"></p>
+   <div class="big" id="uBig"></div>
+   <ul class="rows" id="uRows"></ul>
+   <p class="note" id="uNote"></p>
+  </div>
+ </div>
+</section>
+
+<section class="pane panel" id="p-checklist">
+ <div class="grid">
+  <div>
+   <h2>Site inspection checklist</h2>
+   <p class="lead">Tick items as you walk the site, and add your own at the bottom.</p>
+   <div id="kList"></div>
+   <form class="addrow" id="kAdd">
+    <input id="kText" placeholder="New item, e.g. check drainage outlet" aria-label="New checklist item">
+    <select id="kGroup" aria-label="Section"></select>
+    <button type="submit" class="primary">Add</button>
+   </form>
+  </div>
+  <div class="result" aria-live="polite">
+   <p class="biglabel">Inspection progress</p>
+   <div class="big" id="kBig"></div>
+   <div class="meter"><span id="kMeter"></span></div>
+   <div class="actions">
+    <button type="button" class="primary" id="kCopy">Copy summary</button>
+    <button type="button" id="kReset">Untick all</button>
+   </div>
+   <p class="note" id="kMsg">Ticks are saved in this browser only.</p>
+  </div>
+ </div>
+</section>
+
+</div></main>
+<section class="guides" id="guides"><div class="wrap">
+ <h2>How the calculations work</h2>
+ <p class="lead">Short guides to the methods behind each calculator, with worked examples you can check against the tools above.</p>
+ <div class="gcards">
+  <article class="guide">
+   <h3>How to estimate bricks, cement and sand for a wall</h3>
+   <p>Standard bricks are 190 × 90 × 90 mm. With a 10 mm mortar joint each brick takes up 200 × 100 × 100 mm (its nominal size), so 1 m³ of wall needs 500 bricks.</p>
+   <ol>
+    <li>Find the wall volume: length × height × thickness.</li>
+    <li>Bricks = wall volume × 500.</li>
+    <li>Mortar (wet) = wall volume − the bricks' own volume (number of bricks × 0.001539 m³).</li>
+    <li>Dry mortar = wet mortar × 1.33, because dry cement and sand shrink when water is added.</li>
+    <li>Split the dry mortar by the mix ratio. For 1 : 6, cement is 1/7 and sand is 6/7. One 50 kg bag of cement is 0.0347 m³.</li>
+    <li>Add wastage, usually 5%.</li>
+   </ol>
+   <div class="ex"><b>Example: 20 ft × 10 ft wall, 200 mm thick, mortar 1 : 6, 5% wastage</b>
+    Volume = 6.096 × 3.048 × 0.2 = 3.716 m³<br>
+    Bricks = 3.716 × 500 = 1,858, plus 5% = <b style="display:inline">1,951 bricks</b><br>
+    Wet mortar = 3.716 − (1,858 × 0.001539) = 0.857 m³; dry = 1.139 m³<br>
+    Cement = 1.139 ÷ 7 = 0.163 m³ = 4.69 bags, plus 5% = <b style="display:inline">4.9 bags</b><br>
+    Sand = 0.163 × 6 = 0.976 m³, plus 5% = <b style="display:inline">1.03 m³ (36.2 cft)</b></div>
+   <a class="go" href="#materials" data-go="brick">Open the brick wall calculator →</a>
+  </article>
+  <article class="guide">
+   <h3>How to calculate cement, sand and aggregate for concrete</h3>
+   <p>The concrete grade sets the mix ratio of cement : sand : aggregate. The method is the same for slabs, columns, beams, footings and stairs; only the volume changes.</p>
+   <ol>
+    <li>Find the wet concrete volume, for example slab length × width × thickness.</li>
+    <li>Dry volume = wet volume × 1.54, which allows for voids and shrinkage.</li>
+    <li>Split the dry volume by the ratio. For M20 (1 : 1.5 : 3) the parts add up to 5.5, so cement is 1/5.5, sand 1.5/5.5 and aggregate 3/5.5.</li>
+    <li>Cement bags = cement volume ÷ 0.0347. Add wastage.</li>
+    <li>Steel is estimated as a percentage of the concrete volume × 7,850 kg/m³. Always use the bar schedule from the structural drawings for the real figure.</li>
+   </ol>
+   <div class="ex"><b>Example: slab 20 ft × 15 ft × 5 in, M20, 5% wastage</b>
+    Volume = 6.096 × 4.572 × 0.127 = 3.54 m³ (125 cft); dry = 5.451 m³<br>
+    Cement = 5.451 ÷ 5.5 = 0.991 m³ = 28.56 bags, plus 5% = <b style="display:inline">30.0 bags</b><br>
+    Sand = <b style="display:inline">1.56 m³</b>, aggregate = <b style="display:inline">3.12 m³</b> (both with 5%)<br>
+    Steel at 1% = 3.54 × 0.01 × 7,850 = 278 kg, plus 5% = <b style="display:inline">292 kg</b></div>
+   <div class="scroll"><table>
+    <thead><tr><th>Grade (ratio)</th><th>Cement per m³</th><th>Sand per m³</th><th>Aggregate per m³</th></tr></thead>
+    <tbody>
+     <tr><td>M7.5 (1 : 4 : 8)</td><td>3.41 bags</td><td>0.474 m³</td><td>0.948 m³</td></tr>
+     <tr><td>M10 (1 : 3 : 6)</td><td>4.44 bags</td><td>0.462 m³</td><td>0.924 m³</td></tr>
+     <tr><td>M15 (1 : 2 : 4)</td><td>6.34 bags</td><td>0.440 m³</td><td>0.880 m³</td></tr>
+     <tr><td>M20 (1 : 1.5 : 3)</td><td>8.07 bags</td><td>0.420 m³</td><td>0.840 m³</td></tr>
+     <tr><td>M25 (1 : 1 : 2)</td><td>11.10 bags</td><td>0.385 m³</td><td>0.770 m³</td></tr>
+    </tbody></table></div>
+   <p class="note">Per 1 m³ of finished concrete, before wastage, using nominal mix ratios. M25 and above are normally designed mixes.</p>
+   <a class="go" href="#materials" data-go="slab">Open the concrete calculator →</a>
+  </article>
+  <article class="guide">
+   <h3>How to estimate plaster materials</h3>
+   <p>Inside walls are usually plastered 12 mm thick and outside walls 20 mm.</p>
+   <ol>
+    <li>Plaster volume (wet) = area × thickness.</li>
+    <li>Dry volume = wet volume × 1.33.</li>
+    <li>Split by the mix ratio. For 1 : 4, cement is 1/5 and sand is 4/5.</li>
+    <li>Convert cement to bags (÷ 0.0347) and add wastage.</li>
+   </ol>
+   <div class="ex"><b>Example: 400 sq ft, 12 mm, mix 1 : 4, 5% wastage</b>
+    Area = 37.16 m²; volume = 37.16 × 0.012 = 0.446 m³; dry = 0.593 m³<br>
+    Cement = 0.593 ÷ 5 = 0.119 m³ = 3.42 bags, plus 5% = <b style="display:inline">3.6 bags</b><br>
+    Sand = 0.119 × 4 = 0.474 m³, plus 5% = <b style="display:inline">0.50 m³ (17.6 cft)</b></div>
+   <a class="go" href="#materials" data-go="plaster">Open the plaster calculator →</a>
+  </article>
+  <article class="guide">
+   <h3>How loan EMI is calculated</h3>
+   <p>EMI (equated monthly instalment) is the fixed amount you pay each month until the loan is repaid. Early payments are mostly interest; later ones are mostly principal.</p>
+   <div class="ex"><b>EMI = P × r × (1 + r)<sup>n</sup> ÷ ((1 + r)<sup>n</sup> − 1)</b>
+    P = loan amount, r = yearly interest rate ÷ 12 ÷ 100, n = number of months</div>
+   <div class="ex"><b>Example: Nu. 25,00,000 at 10% for 15 years</b>
+    r = 10 ÷ 12 ÷ 100 = 0.008333; n = 15 × 12 = 180<br>
+    (1 + r)<sup>180</sup> = 4.4539<br>
+    EMI = 25,00,000 × 0.008333 × 4.4539 ÷ 3.4539 = <b style="display:inline">Nu. 26,865 per month</b><br>
+    Total paid = Nu. 48,35,723, of which interest = Nu. 23,35,723</div>
+   <a class="go" href="#emi">Open the EMI calculator →</a>
+  </article>
+  <article class="guide">
+   <h3>Useful conversions on site</h3>
+   <div class="scroll"><table>
+    <tbody>
+     <tr><td>1 metre</td><td>3.2808 feet</td></tr>
+     <tr><td>1 foot</td><td>0.3048 m (304.8 mm)</td></tr>
+     <tr><td>1 inch</td><td>25.4 mm</td></tr>
+     <tr><td>1 square metre</td><td>10.764 sq ft</td></tr>
+     <tr><td>1 cubic metre</td><td>35.315 cft</td></tr>
+     <tr><td>1 bag of cement (50 kg)</td><td>0.0347 m³ (1.23 cft)</td></tr>
+     <tr><td>1 decimal</td><td>435.6 sq ft (1/100 acre)</td></tr>
+     <tr><td>1 acre</td><td>43,560 sq ft (4,046.9 m²)</td></tr>
+     <tr><td>Steel</td><td>7,850 kg per m³</td></tr>
+     <tr><td>1 MPa</td><td>1 N/mm² (145.04 psi)</td></tr>
+    </tbody></table></div>
+   <a class="go" href="#convert">Open the unit converter →</a>
+  </article>
+  <article class="guide">
+   <h3>About these estimates</h3>
+   <p>The calculators give quantities for planning and ordering. Real use depends on brick and aggregate quality, workmanship, site conditions and storage losses.</p>
+   <ol>
+    <li>Keep wastage at 5% for normal work; increase it for small or difficult jobs.</li>
+    <li>Use designed mixes from a lab for M25 and above.</li>
+    <li>Take steel quantities from the bar bending schedule, not from percentages.</li>
+    <li>Have an engineer check the figures before ordering for a real project.</li>
+   </ol>
+   <a class="go" href="#checklist">Open the site checklist →</a>
+  </article>
+ </div>
+</div></section>
+<footer><div class="wrap"><span>Site Toolkit · Author: <b>Ugyen Gayleg</b>, VBPL (Civil Engineer)</span><span>Figures are estimates for planning. Check with your engineer or bank before relying on them.</span></div></footer>
+
+<script>
+{
+const $=id=>document.getElementById(id);
+const fmt=(n,d=0)=>isFinite(n)?n.toLocaleString('en-IN',{minimumFractionDigits:d,maximumFractionDigits:d}):'–';
+const num=id=>{const v=parseFloat($(id).value);return isFinite(v)&&v>0?v:0};
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* remember inputs */
+const saved=store.get('stk-inputs',{});
+/* concrete elements: [code, label, unit type, default in ft/in] */
+const EL={
+ slab:{label:'Slab',steel:1,f:[['L','Length','len',20],['W','Width','len',15],['T','Thickness','thk',5]],vol:g=>g.L*g.W*g.T},
+ column:{label:'Column',steel:2,f:[['B','Column width','thk',12],['D','Column depth','thk',12],['H','Height','len',10],['N','Number of columns','n',4]],vol:g=>g.B*g.D*g.H*g.N},
+ beam:{label:'Beam',steel:1.5,f:[['B','Beam width','thk',10],['D','Beam depth (overall)','thk',15],['L','Length','len',15],['N','Number of beams','n',4]],vol:g=>g.B*g.D*g.L*g.N},
+ footing:{label:'Footing',steel:0.8,f:[['L','Length','len',5],['W','Width','len',5],['T','Thickness','thk',15],['N','Number of footings','n',4]],vol:g=>g.L*g.W*g.T*g.N},
+ stair:{label:'Staircase',steel:1,f:[['N','Number of steps','n',10],['R','Riser (step height)','thk',6],['G','Tread (step depth)','thk',10],['W','Stair width','len',3.5],['T','Waist slab thickness','thk',5]],vol:g=>g.W*(g.T*Math.hypot(g.N*g.G,g.N*g.R)+g.N*0.5*g.G*g.R)}};
+{const m=saved.mU==='m',dv=(t,v)=>!m||t==='n'?v:+(t==='len'?v*0.3048:v*25.4).toFixed(3);
+ $('cGroups').innerHTML=Object.entries(EL).map(([k,e])=>`<div class="fields" data-for="${k}">${e.f.map(([c,l,t,v])=>`<div><label for="c${k}${c}">${l}${t==='n'?'':` (<span data-u="${t}">${t==='len'?(m?'m':'ft'):(m?'mm':'inch')}</span>)`}</label><input id="c${k}${c}" type="number" inputmode="${t==='n'?'numeric':'decimal'}" min="0" value="${dv(t,v)}"></div>`).join('')}<div><label for="c${k}S">Steel (% of volume)</label><input id="c${k}S" type="number" inputmode="decimal" min="0" step="0.1" value="${e.steel}"></div></div>`).join('')}
+document.querySelectorAll('main input[id]:not(#kText), main select[id]:not(#kGroup):not(#uF):not(#uT):not(#eC)').forEach(el=>{if(saved[el.id]!=null)el.value=saved[el.id]});
+if(!$('bT').value)$('bT').value='0.2';
+const remember=()=>{const o={};document.querySelectorAll('main input[id]:not(#kText), main select[id]:not(#kGroup)').forEach(el=>o[el.id]=el.value);o.kind=kind;o.cat=cat;store.set('stk-inputs',o)};
+
+/* tabs */
+const tabs=['materials','emi','convert','checklist'];
+let curTab='materials';
+const show=()=>{const hsh=location.hash.slice(1);if(tabs.includes(hsh))curTab=hsh;const t=curTab;
+ tabs.forEach(x=>{$('p-'+x).hidden=x!==t});
+ document.querySelectorAll('.tools a').forEach(a=>{if(a.getAttribute('href')==='#'+t)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')})};
+addEventListener('hashchange',show);show();
+
+/* materials */
+const FT=0.3048,BAG=0.0347,CFT=35.315,SQFT=0.09290304;
+let kind=saved.kind==='concrete'?'slab':(['brick','plaster'].includes(saved.kind)||EL[saved.kind])?saved.kind:'brick';
+const isM=()=>$('mU').value==='m';
+const L=id=>num(id)*(isM()?1:FT);
+const LBL={len:['ft','m'],thk:['inch','mm'],area:['sq ft','m²']};
+const two=(a,ua,b,ub,da=1,db=2)=>`${fmt(a,da)} ${ua} <span class="sub">(${fmt(b,db)} ${ub})</span>`;
+const cemTxt=bags=>two(bags,'bags',bags*50,'kg',1,0);
+const volTxt=m3=>two(m3*CFT,'cft',m3,'m³',1,2);
+function mat(){
+ document.querySelectorAll('[data-u]').forEach(s=>s.textContent=LBL[s.dataset.u][isM()?1:0]);
+ document.querySelectorAll('[data-kind]').forEach(b=>b.classList.toggle('on',b.dataset.kind===kind));
+ document.querySelectorAll('.fields[data-for]').forEach(f=>f.hidden=!(f.dataset.for===kind||(f.dataset.for==='cshared'&&EL[kind])));
+ let big,label,rows=[];
+ if(kind==='brick'){
+  const cu=$('bT').value==='custom';$('bTcWrap').hidden=!cu;
+  const w=1+num('bW')/100,t=cu?num('bTc')*(isM()?0.001:0.0254):+$('bT').value,s=+$('bMix').value;
+  const A=L('bL')*L('bH'),V=A*t;
+  const bricks=V*500,wet=Math.max(V-bricks*0.001539,0),dry=wet*1.33,cem=dry/(1+s);
+  label='Bricks needed';big='<span class="n">'+fmt(Math.ceil(bricks*w))+'</span><small>pcs</small>';
+  rows=[['Cement',cemTxt(cem/BAG*w)],['Sand',volTxt(cem*s*w)],['Wall area',two(A/SQFT,'sq ft',A,'m²',0,2)],['Wall volume',volTxt(V)]];
+ }else if(EL[kind]){
+  const e=EL[kind],u=t=>t==='len'?(isM()?1:FT):t==='thk'?(isM()?0.001:0.0254):1,g={};
+  e.f.forEach(([c,,t])=>g[c]=num('c'+kind+c)*u(t));
+  const w=1+num('cW')/100,mix=$('cMix'),[c,sa,ag]=mix.value.split(',').map(Number),sum=c+sa+ag;
+  const V=e.vol(g),dry=V*1.54,bags=dry*c/sum/BAG*w,steel=V*num('c'+kind+'S')/100*7850*w;
+  label='Cement needed';big='<span class="n">'+fmt(bags,1)+'</span><small>bags</small>';
+  rows=[['Grade',mix.options[mix.selectedIndex].text.split(',')[0]],['Cement weight',fmt(bags*50)+' kg'],['Sand',volTxt(dry*sa/sum*w)],['Aggregate',volTxt(dry*ag/sum*w)],['Steel (rod)',two(steel,'kg',steel/1000,'tonnes',0,2)],['Concrete volume',volTxt(V)]];
+ }else{
+  const w=1+num('pW')/100,s=+$('pMix').value;
+  const A=num('pA')*(isM()?1:SQFT),V=A*(+$('pT').value/1000),dry=V*1.33,cem=dry/(1+s);
+  label='Cement needed';big='<span class="n">'+fmt(cem/BAG*w,1)+'</span><small>bags</small>';
+  rows=[['Cement weight',fmt(cem/BAG*w*50)+' kg'],['Sand',volTxt(cem*s*w)],['Plaster area',two(A/SQFT,'sq ft',A,'m²',0,2)],['Plaster volume',volTxt(V)]];
+ }
+ $('mBigLabel').textContent=label;$('mBig').innerHTML=big;
+ $('mRows').innerHTML=rows.map(r=>`<li><span>${r[0]}</span><b>${r[1]}</b></li>`).join('');
+}
+document.querySelectorAll('[data-kind]').forEach(b=>b.addEventListener('click',()=>{kind=b.dataset.kind;mat();remember();fit()}));
+document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',()=>{kind=a.dataset.go;mat();remember()}));
+document.querySelectorAll('.guide .go').forEach(a=>a.addEventListener('click',()=>setTimeout(()=>{document.querySelector('.tools').scrollIntoView({behavior:'smooth'});fit()},0)));
+let prevU=$('mU').value;
+$('mU').addEventListener('input',()=>{const toM=isM();if(toM===(prevU==='m'))return;prevU=$('mU').value;
+ const conv=(ids,f)=>ids.forEach(id=>{const v=parseFloat($(id).value);if(isFinite(v))$(id).value=+(toM?v*f:v/f).toFixed(toM?4:2)});
+ conv(['bL','bH'],FT);conv(['bTc'],25.4);conv(['pA'],SQFT);
+ Object.entries(EL).forEach(([k,e])=>e.f.forEach(([c,,t])=>{if(t==='len')conv(['c'+k+c],FT);if(t==='thk')conv(['c'+k+c],25.4)}));mat();remember();fit()});
+
+/* EMI */
+const CUR=[['BTN','Bhutanese ngultrum','Nu.','en-IN'],['INR','Indian rupee','₹','en-IN'],['BDT','Bangladeshi taka','৳','en-IN'],['NPR','Nepalese rupee','Rs','en-IN'],['PKR','Pakistani rupee','Rs','en-IN'],['LKR','Sri Lankan rupee','Rs','en-IN'],['USD','US dollar','$','en-US'],['EUR','Euro','€','en-US'],['GBP','British pound','£','en-US'],['AUD','Australian dollar','A$','en-US'],['CAD','Canadian dollar','C$','en-US'],['SGD','Singapore dollar','S$','en-US'],['AED','UAE dirham','AED','en-US'],['SAR','Saudi riyal','SAR','en-US'],['MYR','Malaysian ringgit','RM','en-US'],['THB','Thai baht','฿','en-US'],['JPY','Japanese yen','¥','en-US'],['CNY','Chinese yuan','CN¥','en-US']];
+$('eC').innerHTML=CUR.map(c=>`<option value="${c[0]}">${c[2]} ${c[1]} (${c[0]})</option>`).join('');
+$('eC').value=CUR.some(c=>c[0]===saved.eC)?saved.eC:'BTN';
+const cur=()=>CUR.find(x=>x[0]===$('eC').value)||CUR[0];
+const money=n=>{const c=cur();return c[2]+' '+(isFinite(n)?n.toLocaleString(c[3],{maximumFractionDigits:0}):'–')};
+function emi(){
+ $('ePL').textContent=`Loan amount (${cur()[2]})`;
+ const P=num('eP'),n=Math.round(Math.min(num('eY'),40)*12),r=num('eR')/1200;
+ if(!P||!n){$('eBig').innerHTML='–';$('eRows').innerHTML='';$('eTable').innerHTML='';return}
+ const m=r?P*r*(1+r)**n/((1+r)**n-1):P/n,total=m*n,int=total-P;
+ $('eBig').innerHTML='<span class="n">'+money(m)+'</span><small>/ month</small>';
+ $('eBarP').style.width=(P/total*100)+'%';$('eBarI').style.width=(int/total*100)+'%';
+ $('eRows').innerHTML=[['Total interest',money(int)],['Total you pay',money(total)],['Number of payments',fmt(n)],['Interest share',fmt(int/total*100,1)+'%']].map(x=>`<li><span>${x[0]}</span><b>${x[1]}</b></li>`).join('');
+ let bal=P,html='<tr><th>Year</th><th>Principal</th><th>Interest</th><th>Balance</th></tr>';
+ for(let y=1;(y-1)*12<n;y++){let pp=0,ii=0;for(let k=0;k<12&&(y-1)*12+k<n;k++){const i=bal*r,p=m-i;ii+=i;pp+=p;bal-=p}
+  html+=`<tr><td>${y}</td><td>${money(pp)}</td><td>${money(ii)}</td><td>${money(Math.max(bal,0))}</td></tr>`}
+ $('eTable').innerHTML=html;
+}
+
+/* converter: factor to base unit, or [toBase, fromBase] for temperature */
+const UNITS={
+ length:{label:'Length',def:['ft','m'],note:'',list:[['mm','Millimetre (mm)',.001],['cm','Centimetre (cm)',.01],['m','Metre (m)',1],['km','Kilometre (km)',1000],['in','Inch (in)',.0254],['ft','Foot (ft)',.3048],['yd','Yard (yd)',.9144],['mi','Mile (mi)',1609.344]]},
+ area:{label:'Area',def:['sqft','sqm'],note:'1 decimal = 1/100 acre = 435.6 sq ft; 1 hectare = 10,000 m².',list:[['sqcm','Square centimetre (cm²)',1e-4],['sqm','Square metre (m²)',1],['dec','Decimal (1/100 acre)',40.468564224],['ha','Hectare (ha)',1e4],['sqkm','Square kilometre (km²)',1e6],['sqin','Square inch (sq in)',0.00064516],['sqft','Square foot (sq ft)',0.09290304],['sqyd','Square yard (sq yd)',0.83612736],['acre','Acre',4046.8564224]]},
+ volume:{label:'Volume',def:['cft','cum'],note:'cft means cubic feet, the usual unit for sand and aggregate.',list:[['ml','Millilitre (mL)',1e-6],['l','Litre (L)',1e-3],['cum','Cubic metre (m³)',1],['cin','Cubic inch (cu in)',1.6387064e-5],['cft','Cubic foot (cft)',0.028316846592],['cyd','Cubic yard (cu yd)',0.764554857984],['galus','US gallon',0.003785411784],['galuk','Imperial gallon',0.00454609]]},
+ weight:{label:'Weight',def:['lb','kg'],note:'A metric tonne is 1,000 kg; a US ton is 2,000 lb.',list:[['g','Gram (g)',.001],['kg','Kilogram (kg)',1],['t','Tonne (t)',1000],['oz','Ounce (oz)',0.028349523125],['lb','Pound (lb)',0.45359237],['ston','US ton',907.18474]]},
+ temp:{label:'Temperature',def:['c','f'],note:'Concrete should not be poured below about 5 °C without protection.',list:[['c','Celsius (°C)',[x=>x,c=>c]],['f','Fahrenheit (°F)',[x=>(x-32)*5/9,c=>c*9/5+32]],['k','Kelvin (K)',[x=>x-273.15,c=>c+273.15]]]},
+ pressure:{label:'Pressure',def:['psi','mpa'],note:'MPa and N/mm² are the same; both are used for concrete and steel strength.',list:[['pa','Pascal (Pa)',1],['kpa','Kilopascal (kPa)',1e3],['mpa','Megapascal (MPa = N/mm²)',1e6],['bar','Bar',1e5],['psi','Pounds per sq inch (psi)',6894.757293168],['kgcm','Kilogram-force per cm²',98066.5]]},
+ speed:{label:'Speed',def:['kmh','mph'],note:'',list:[['ms','Metre per second (m/s)',1],['kmh','Kilometre per hour (km/h)',1/3.6],['mph','Mile per hour (mph)',0.44704],['kn','Knot (kn)',0.514444]]}};
+let cat=UNITS[saved.cat]?saved.cat:'length';
+$('uCats').innerHTML=Object.entries(UNITS).map(([k,u])=>`<button type="button" data-cat="${k}">${u.label}</button>`).join('');
+const toB=(u,x)=>Array.isArray(u[2])?u[2][0](x):x*u[2],fromB=(u,b)=>Array.isArray(u[2])?u[2][1](b):b/u[2];
+const nice=n=>{if(!isFinite(n))return'–';const a=Math.abs(n);if(a!==0&&a<1e-9)return n.toExponential(4);if(a<1)return n.toLocaleString('en-US',{maximumSignificantDigits:6});return Number(n.toPrecision(12)).toLocaleString('en-US',{maximumFractionDigits:6})};
+function fillUnits(keep){
+ const U=UNITS[cat],L=U.list,opts=L.map(u=>`<option value="${u[0]}">${u[1]}</option>`).join('');
+ $('uF').innerHTML=opts;$('uT').innerHTML=opts;
+ $('uF').value=keep&&L.some(u=>u[0]===saved.uF)?saved.uF:U.def[0];
+ $('uT').value=keep&&L.some(u=>u[0]===saved.uT)?saved.uT:U.def[1];
+}
+function conv(){
+ document.querySelectorAll('[data-cat]').forEach(b=>b.classList.toggle('on',b.dataset.cat===cat));
+ const U=UNITS[cat],L=U.list,v=parseFloat($('uV').value)||0,from=L.find(u=>u[0]===$('uF').value),to=L.find(u=>u[0]===$('uT').value);
+ const base=toB(from,v);
+ $('uBigLabel').textContent=`${v.toLocaleString('en-US',{maximumFractionDigits:10})} ${from[1]} =`;
+ $('uBig').innerHTML=`<span class="n">${nice(fromB(to,base))}</span><small>${to[1].replace(/ \(.*\)$/,'').toLowerCase()}</small>`;
+ $('uRows').innerHTML=L.filter(u=>u!==to&&u!==from).map(u=>`<li><span>${u[1]}</span><b>${nice(fromB(u,base))}</b></li>`).join('');
+ $('uNote').textContent=U.note;$('uNote').hidden=!U.note;
+}
+$('uCats').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;cat=b.dataset.cat;fillUnits(false);conv();remember();fit()});
+$('uSwap').addEventListener('click',()=>{const f=$('uF').value;$('uF').value=$('uT').value;$('uT').value=f;conv();remember();fit()});
+fillUnits(true);
+
+/* checklist */
+const GROUPS=[
+ ['Safety',['Workers wearing helmets, boots and gloves','Scaffolding tied, braced and with guard rails','Openings and edges covered or fenced','First-aid box stocked and easy to reach','Electrical cables off the ground and away from water']],
+ ['Materials',['Cement stored dry, off the floor, oldest used first','Bricks soaked before laying','Sand and aggregate clean, no clay or rubbish','Steel rods stored off the ground, free of loose rust']],
+ ['Formwork and steel',['Shuttering level, tight and well propped','Rod size and spacing match the drawing','Concrete cover blocks in place','Laps and hooks tied correctly']],
+ ['Concrete and curing',['Mix ratio and water measured, not guessed','Concrete vibrated or compacted properly','Test cubes taken for important pours','Curing with water for at least 7 days']],
+ ['Housekeeping',['Walkways clear of debris','Drinking water and toilet available for workers','Daily site diary updated']]];
+const ck=store.get('stk-check',{done:{},custom:[]});
+$('kGroup').innerHTML=GROUPS.map(g=>`<option>${g[0]}</option>`).join('');
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const allItems=()=>GROUPS.map(([g,items])=>[g,[...items.map((t,i)=>({id:g+'#'+i,t})),...ck.custom.filter(c=>c.g===g).map(c=>({id:c.id,t:c.t,custom:true}))]]);
+let armed=false;
+function check(){
+ const groups=allItems();let total=0,done=0;
+ $('kList').innerHTML=groups.map(([g,items])=>`<div class="group"><h3>${g}</h3>${items.map(it=>{total++;const on=!!ck.done[it.id];if(on)done++;
+  const id='k'+btoa(unescape(encodeURIComponent(it.id))).replace(/[^a-z0-9]/gi,'');
+  return `<div class="item${on?' done':''}"><input type="checkbox" id="${id}" data-id="${esc(it.id)}"${on?' checked':''}><label for="${id}">${esc(it.t)}</label>${it.custom?`<button type="button" data-del="${esc(it.id)}" aria-label="Remove item">Remove</button>`:''}</div>`}).join('')}</div>`).join('');
+ $('kBig').innerHTML=`<span class="n">${done}</span><small>of ${total} done</small>`;
+ $('kMeter').style.width=(total?done/total*100:0)+'%';
+ fit();
+}
+$('kList').addEventListener('change',e=>{const id=e.target.dataset.id;if(!id)return;if(e.target.checked)ck.done[id]=1;else delete ck.done[id];store.set('stk-check',ck);check()});
+$('kList').addEventListener('click',e=>{const id=e.target.dataset.del;if(!id)return;ck.custom=ck.custom.filter(c=>c.id!==id);delete ck.done[id];store.set('stk-check',ck);check()});
+$('kAdd').addEventListener('submit',e=>{e.preventDefault();const t=$('kText').value.trim();if(!t)return;ck.custom.push({id:'c'+Date.now(),t,g:$('kGroup').value});$('kText').value='';store.set('stk-check',ck);check()});
+$('kReset').addEventListener('click',()=>{if(!armed){armed=true;$('kReset').textContent='Click again to untick all';setTimeout(()=>{armed=false;$('kReset').textContent='Untick all'},4000);return}
+ armed=false;ck.done={};store.set('stk-check',ck);$('kReset').textContent='Untick all';check()});
+$('kCopy').addEventListener('click',async()=>{
+ const d=new Date().toLocaleDateString('en-GB');
+ const txt=`Site inspection ${d}\n`+allItems().map(([g,items])=>`\n${g}\n`+items.map(it=>`${ck.done[it.id]?'[x]':'[ ]'} ${it.t}`).join('\n')).join('\n');
+ try{await navigator.clipboard.writeText(txt);$('kMsg').textContent='Summary copied. Paste it into WhatsApp, email or a report.'}
+ catch(e){$('kMsg').textContent='Copying was blocked by the browser. Select the list and copy it by hand.'}
+});
+
+/* shrink big figures so the full value always fits */
+const fit=()=>document.querySelectorAll('.pane:not([hidden]) .big').forEach(el=>{el.style.fontSize='';el.classList.remove('wrap');let s=parseFloat(getComputedStyle(el).fontSize);while(el.scrollWidth>el.clientWidth+1&&s>20){s-=2;el.style.fontSize=s+'px'}if(el.scrollWidth>el.clientWidth+1)el.classList.add('wrap')});
+const fitRO=new ResizeObserver(fit);fitRO.observe(document.querySelector('main'));
+addEventListener('hashchange',fit);
+
+/* wire inputs */
+document.querySelectorAll('main input:not(#kText):not([type=checkbox]), main select:not(#kGroup):not(#mU)').forEach(el=>el.addEventListener('input',()=>{mat();emi();conv();remember();fit()}));
+mat();emi();conv();check();fit();
+}
+</script>
+</body>
+</html>
